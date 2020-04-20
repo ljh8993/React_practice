@@ -9,13 +9,6 @@ app = Flask(__name__)
 def index():
     return redirect('/')
 
-@app.route('/time', methods=["POST"])
-def time():
-    data = request.json
-    if not data:
-        return jsonify(result=False, msg="No Data")
-    return jsonify(time=data.get('data', 'no data'))
-
 @app.route('/weather', methods=["POST"])
 def weather():
     data = request.json
