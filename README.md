@@ -1,3 +1,7 @@
+## Project of the React
+리액트 연습장
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
