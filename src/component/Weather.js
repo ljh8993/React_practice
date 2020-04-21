@@ -15,7 +15,7 @@ import Fade from '@material-ui/core/Fade';
 import Circle_progress from '../service/circle_progress';
 import Toast from '../service/toast';
 
-const modalStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     modal: {
       display: 'flex',
       alignItems: 'center',
@@ -29,26 +29,20 @@ const modalStyles = makeStyles((theme) => ({
       padding: theme.spacing(2, 4, 3),
       margin: '10%'
     },
-}));
-
-const selectStyles = makeStyles((theme) => ({
     button: {
-      display: 'block',
-      marginTop: theme.spacing(2),
-      marginLeft: "25%",
-      border: "1px solid darkgray"
-    },
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
+        display: 'block',
+        marginTop: theme.spacing(2),
+        marginLeft: "25%",
+        border: "1px solid darkgray"
+      },
+      formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
+      },
 }));
 
-
-
-function Weather() {
-    const modalStyle = modalStyles();
-    const selectStyle = selectStyles();
+export default function Weather() {
+    const classes = useStyles();
     const [n_list, setNameList] = useState([]);
     const [code, setCode] = useState('');
     // modal 이벤트
@@ -90,6 +84,7 @@ function Weather() {
             toastOpen();
             return;
         }
+        setToast(false);
         setCircle(true);
         let s = code.split(';')
         const res = await axios.post('/weather', {method: "weather_data", code: s[0]});
@@ -99,6 +94,8 @@ function Weather() {
             setContents(msg);
             setCircle(false);
             setModalOpen(true);
+        } else {
+            setCircle(false);
         }
     };
     //////
@@ -112,36 +109,34 @@ function Weather() {
     
     return (
         <>
-            <Toast open={toast} msg={"You have to select '도 선택'"}/>
+            <Toast open={toast} msg={"You have to select '지역 선택'"}/>
             {circle && <Circle_progress />}
-            <Button className={selectStyle.button} onClick={modalOpenFn}>
-                검색
-            </Button>
-            <FormControl className={selectStyle.formControl}>
-                <InputLabel id="demo-controlled-open-select-label">도 선택</InputLabel>
+            <FormControl className={classes.formControl}>
+                <InputLabel id="demo-controlled-open-select-label">지역 선택</InputLabel>
                 <Select
                 labelId="demo-controlled-open-select-label"
                 id="demo-controlled-open-select"
                 value={code}
                 onChange={selectChange}
                 >
-                <MenuItem value="">
-                    <em></em>
-                </MenuItem>
+                <MenuItem value=""></MenuItem>
                 {
-                    n_list.map((item) =>
-                        (<MenuItem key={item.code} value={item.code + ';' + item.name}><em>{item.name}</em></MenuItem>)
+                    n_list.map(item =>
+                        (<MenuItem key={item.code} value={item.code + ';' + item.name}>{item.name}</MenuItem>)
                     )
                 }
            
                 </Select>
             </FormControl>
+            <Button className={classes.button} onClick={modalOpenFn}>
+                검색
+            </Button>
 
             {/* MODAL */}
             <Modal
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
-                className={modalStyle.modal}
+                className={classes.modal}
                 open={modalopen}
                 onClose={modalCloseFn}
                 closeAfterTransition
@@ -151,7 +146,7 @@ function Weather() {
                 }}
             >
                 <Fade in={modalopen}>
-                <div className={modalStyle.paper}>
+                <div className={classes.paper}>
                     <h2 id="transition-modal-title">{modalTitle}</h2>
                     <p id="transition-modal-description">{modalContents}</p>
                 </div>
@@ -161,4 +156,3 @@ function Weather() {
     )
 }
 
-export default Weather;

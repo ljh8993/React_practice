@@ -23,6 +23,19 @@ def weather():
         chk, msg = rss_view(code)
         return jsonify(result=chk, msg=msg)
 
+@app.route("/naver_now_rank", methods=["POST"])
+def naver_now_rank():
+    if request.json.get("method", '') == "rank":
+        from urllib.request import urlopen
+        import json
+        try:
+            with urlopen('https://www.naver.com/srchrank') as res:
+                body = res.read()
+
+            data = json.loads(body.decode())['data']
+            return jsonify(result=True, list=data)
+        except Exception as e:
+            return jsonify(result=False, msg=repr(e))
 
 def city_list():
     return [
