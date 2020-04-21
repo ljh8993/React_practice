@@ -12,7 +12,8 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 
-
+import Circle_progress from '../service/circle_progress';
+import Toast from '../service/toast';
 
 const modalStyles = makeStyles((theme) => ({
     modal: {
@@ -50,9 +51,14 @@ function Weather() {
     const selectStyle = selectStyles();
     const [n_list, setNameList] = useState([]);
     const [code, setCode] = useState('');
+    // modal 이벤트
     const [open, setOpen] = useState(false);
     const [modalTitle, setTitle] = useState('');
     const [modalContents, setContents] = useState('');
+    // 로딩 제어
+    const [circle, setCircle] = useState(false);
+    // 토스트 제어
+    const [toast, setToast] = useState(false);
 
     useEffect(() => {
         get_cityName().then(res => setNameList(res.list))
@@ -79,20 +85,34 @@ function Weather() {
     };
 
     const modalOpen = async() => {
-        if (!code) return;
+        if (!code) {
+            toastOpen();
+            return;
+        }
+        setCircle(true);
         let s = code.split(';')
         const res = await axios.post('/weather', {method: "weather_data", code: s[0]});
         if (res.status === 200 && res.statusText === "OK" && res.data.result) {
             const msg = res.data.msg.replace(/<br \/>/gi, "\n\n");
             setTitle(s[1]);
             setContents(msg);
+            setCircle(false);
             setOpen(true);
         }
     };
     //////
+
+    const toastOpen = () => {
+        setToast(true);
+        setTimeout(() => {
+            setToast(false);
+        }, 3000);
+    }
     
     return (
         <>
+            {toast && <Toast msg={"You have to select '도 선택'"}/>}
+            {circle && <Circle_progress />}
             <Button className={selectStyle.button} onClick={modalOpen}>
                 검색
             </Button>
