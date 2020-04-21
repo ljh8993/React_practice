@@ -19,6 +19,7 @@ const modalStyles = makeStyles((theme) => ({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      whiteSpace: "pre-line"
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
@@ -82,8 +83,9 @@ function Weather() {
         let s = code.split(';')
         const res = await axios.post('/weather', {method: "weather_data", code: s[0]});
         if (res.status === 200 && res.statusText === "OK" && res.data.result) {
+            const msg = res.data.msg.replace(/<br \/>/gi, "\n\n");
             setTitle(s[1]);
-            setContents(res.data.msg);
+            setContents(msg);
             setOpen(true);
         }
     };
