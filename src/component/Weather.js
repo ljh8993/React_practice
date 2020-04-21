@@ -52,7 +52,7 @@ function Weather() {
     const [n_list, setNameList] = useState([]);
     const [code, setCode] = useState('');
     // modal 이벤트
-    const [open, setOpen] = useState(false);
+    const [modalopen, setModalOpen] = useState(false);
     const [modalTitle, setTitle] = useState('');
     const [modalContents, setContents] = useState('');
     // 로딩 제어
@@ -80,12 +80,13 @@ function Weather() {
     };
 
     // modal
-    const modalClose = () => {
-        setOpen(false);
+    const modalCloseFn = () => {
+        setModalOpen(false);
     };
 
-    const modalOpen = async() => {
+    const modalOpenFn = async() => {
         if (!code) {
+            if (toast) return;
             toastOpen();
             return;
         }
@@ -97,7 +98,7 @@ function Weather() {
             setTitle(s[1]);
             setContents(msg);
             setCircle(false);
-            setOpen(true);
+            setModalOpen(true);
         }
     };
     //////
@@ -111,9 +112,9 @@ function Weather() {
     
     return (
         <>
-            {toast && <Toast msg={"You have to select '도 선택'"}/>}
+            <Toast open={toast} msg={"You have to select '도 선택'"}/>
             {circle && <Circle_progress />}
-            <Button className={selectStyle.button} onClick={modalOpen}>
+            <Button className={selectStyle.button} onClick={modalOpenFn}>
                 검색
             </Button>
             <FormControl className={selectStyle.formControl}>
@@ -141,15 +142,15 @@ function Weather() {
                 aria-labelledby="transition-modal-title"
                 aria-describedby="transition-modal-description"
                 className={modalStyle.modal}
-                open={open}
-                onClose={modalClose}
+                open={modalopen}
+                onClose={modalCloseFn}
                 closeAfterTransition
                 BackdropComponent={Backdrop}
                 BackdropProps={{
                 timeout: 500,
                 }}
             >
-                <Fade in={open}>
+                <Fade in={modalopen}>
                 <div className={modalStyle.paper}>
                     <h2 id="transition-modal-title">{modalTitle}</h2>
                     <p id="transition-modal-description">{modalContents}</p>
