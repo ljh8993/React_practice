@@ -1,5 +1,5 @@
 import time
-from flask import Flask, jsonify, request, render_template, redirect
+from flask import Flask, jsonify, request
 
 import feedparser as fd
 
@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return redirect('/')
+    return app.send_static_file('index.html')
+
 
 @app.route('/weather', methods=["POST"])
 def weather():

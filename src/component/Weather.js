@@ -32,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
     button: {
         display: 'block',
         marginTop: theme.spacing(2),
-        marginLeft: "25%",
         border: "1px solid darkgray"
       },
       formControl: {
