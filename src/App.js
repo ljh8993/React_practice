@@ -20,6 +20,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Weather from './component/Weather';
 import NaverRank from './component/NaverRank';
 import Omok from './component/Omok';
+import MapAddress from './component/MapAddress';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,9 +41,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const lists = [
-  {"title": "날씨 확인", "component": <Weather />},
-  {"title": "실시간 검색어 확인", "component": <NaverRank />},
-  {"title": "오목 게임", "component": <Omok />}
+  {title: "날씨 확인", component: <Weather />},
+  {title: "실시간 검색어 확인", component: <NaverRank />},
+  {title: "오목 게임", component: <Omok />},
+  {title: "주소 찾기", component: <MapAddress />}
 ];
 
 function App() {
@@ -105,6 +107,7 @@ function App() {
             <Typography variant="h6" className={classes.title}>
               {title}
             </Typography>
+            {/* <Button color="inherit" onClick={() => loginFn}>LOGIN</Button> */}
           </Toolbar>
         </AppBar>
       </div>

@@ -3,32 +3,34 @@ import { makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles (() => ({
     '1': {
-        "width": "20px",
-        "height": "20px",
-        "border-radius": "50%",
-        "background-color": "black",
-        "display": "inline-block",
-        "margin": "0 2px"
+        width: "20px",
+        height: "20px",
+        borderRadius: "50%",
+        backgroundColor: "black",
+        display: "inline-block",
+        margin: "0 2px"
     },
     '0' : {
-        "width": "18px",
-        "height": "18px",
-        "border-radius": "50%",
-        "border": "1px solid",
-        "display": "inline-block",
-        "margin": "0 2px"
+        width: "18px",
+        height: "18px",
+        borderRadius: "50%",
+        border: "1px solid",
+        display: "inline-block",
+        margin: "0 2px"
     },
-    "plusmark": {
-        "margin": "0 4px" },
-    "div_hei": {"height": "29px"}
+    plusmark: {
+        margin: "0 4px" },
+    div_hei: {
+        height: "29px"
+    }
 }));
 
 let num = 19, count = 0, done = false;
 
 function make_frame() {
-    const arr = Array();
+    const arr = [];
     for (let i=0; i<num+1; i++) {
-        const chd_addr = Array();
+        const chd_addr = [];
         for (let j=0; j<num+1; j++) {
             if (!i && !j) {
                 chd_addr.push('┌');
@@ -75,7 +77,7 @@ function five_check(li, row, col) {
         ++cnt;
     }
     if (cnt === 5) return true;
-    ////////////////////
+
     // '/' 모양 체크
     cnt = 1;
     row_m = row_p = row;
@@ -95,7 +97,7 @@ function five_check(li, row, col) {
         ++cnt;
     }
     if (cnt === 5) return true;
-    //////////////////////
+
     // 'ㅡ' 모양 체크
     cnt = 1;
     col_m = col_p = col;
@@ -113,7 +115,7 @@ function five_check(li, row, col) {
         ++cnt;
     }
     if (cnt === 5) return true;
-    //////////////////////
+
     // 'ㅣ' 모양 체크
     cnt = 1;
     row_m = row_p = row;
@@ -130,7 +132,6 @@ function five_check(li, row, col) {
         ++cnt;   
     }
     return cnt === 5 ? true : false;
-    //////////////////////
 }
 
 
@@ -146,10 +147,9 @@ export default function Omok() {
         setFrame(tmp);
         if (five_check(tmp, row, col)) {
             done = true;
-            const st = tmp[row][col] === '1' ? "흑돌" : "백돌";
-            console.log(count);
+            const dic = {"1": "흑돌", "0": "백돌"}
             setTimeout(() => {
-                alert(st + " 승리 !");
+                alert(dic[tmp[row][col]] + " 승리 !");
             }, 400);
         }
         if ((num-1)*(num-1) === count) {
