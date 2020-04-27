@@ -2,15 +2,15 @@
 리액트 연습장
 
 ## python install
-pip install flask\
-pip install feedparser\
-pip install PyMySQL\
+pip install flask<br/>
+pip install feedparser<br/>
+pip install PyMySQL<br/>
 
 ## another install 
-yarn add axios\
-yarn add react-script\
-npm install -s react-daum-post\
-yarn add @material-ui/core\
+yarn add axios<br/>
+yarn add react-script<br/>
+npm install -s react-daum-post<br/>
+yarn add @material-ui/core<br/>
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
