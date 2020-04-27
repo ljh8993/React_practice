@@ -1,12 +1,20 @@
 import React, { useState } from 'react';
-import {
-    Button,
-    Tooltip,
-    Input
-} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Toast from '../service/toast';
+import {
+    Button,
+    Tooltip,
+    Input,
+    IconButton
+} from '@material-ui/core';
+import {
+    ExpandLess,
+    Clear,
+    Add,
+    Remove,
+    ArrowBack
+}from '@material-ui/icons';
 
 const theme = createMuiTheme({
   overrides: {
@@ -36,10 +44,8 @@ function replaceAll(str) {
         if (str.indexOf('xx') > -1) {
             return false;
         }
-        return eval(str.split('^').join('**').split('x').join('*'));
-    } catch {
-        return false;
-    }
+        return eval(str.replace(/÷/g, '/').replace(/\^/g, '**').replace(/x/g, '*'));
+    } catch { return false; }
 }
 
 export default function Calculator() {
@@ -68,9 +74,9 @@ export default function Calculator() {
     }
 
     const li = [
-        ['7','8','9',['←', '취소'], ['^', '제곱']],
-        ['4','5','6',['+','더하기'], ['-', '빼기']],
-        ['1','2','3',['x','곱하기'], ['÷', '나누기']],
+        ['7','8','9',['←', '취소', <ArrowBack />], ['^', '제곱', <ExpandLess />]],
+        ['4','5','6',['+','더하기', <Add />], ['-', '빼기', <Remove />]],
+        ['1','2','3',['x', '곱하기', <Clear />], ['÷', '나누기']],
         ['0','.','=',]
     ];
     return (
@@ -92,9 +98,14 @@ export default function Calculator() {
                         <tr key={parent_idx}>
                             {data.map((sub_data, idx) => (
                                 <td colSpan={parent_idx === 3 && (!idx || idx === 2)? '2' : '1'} key={idx}>
-                                    {idx === 3 || idx === 4
+                                    {[3, 4].indexOf(idx) > -1
                                     ? (<Tooltip title={sub_data[1]} placement={'right-start'}>
-                                        <Button onClick={() => clicked(sub_data[0])} className={classes.textTransUnset}>{sub_data[0]}</Button>
+                                        {
+                                            [3, 4].indexOf(idx) > -1 && (!parent_idx || parent_idx === 1)
+                                            || parent_idx === 2 && idx === 3
+                                            ? (<IconButton onClick={() => clicked(sub_data[0])}>{sub_data[2]}</IconButton>)
+                                            : (<Button onClick={() => clicked(sub_data[0])} className={classes.textTransUnset}>{sub_data[0]}</Button>)
+                                        }
                                         </Tooltip>)
                                     : (<Button onClick={() => clicked(sub_data)}>{sub_data}</Button>)
                                     }

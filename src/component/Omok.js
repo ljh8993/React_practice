@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles (() => ({
     '1': {
@@ -19,9 +20,13 @@ const useStyles = makeStyles (() => ({
         margin: "0 2px"
     },
     plusmark: {
-        margin: "0 4px" },
+        margin: "0 4px"
+    },
     div_hei: {
         height: "29px"
+    },
+    realoadBtn: {
+        top: "-30px"
     }
 }));
 
@@ -134,7 +139,6 @@ function five_check(li, row, col) {
     return cnt === 5 ? true : false;
 }
 
-
 export default function Omok() {
     const classes = useStyles();
     const [frame, setFrame] = useState(omok_frame);
@@ -158,8 +162,16 @@ export default function Omok() {
             }, 300);
         }
     }
+
+    const reload = () => {
+        count = 0;
+        done = false;
+        setFrame(make_frame());
+    }
+
     return(
         <>
+        {done && <Button variant="contained" onClick={reload} className={classes.realoadBtn}>재 시작</Button>}
         <div>
             차례 : <span className={classes['' + count%2]}></span>
         </div>

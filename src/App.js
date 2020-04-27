@@ -12,10 +12,17 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
-  Button
+  // Button
 } from '@material-ui/core'
-import SearchIcon from '@material-ui/icons/Search';
-import MenuIcon from '@material-ui/icons/Menu';
+import {
+  ExposureOutlined,
+  WbSunnyOutlined,
+  Search,
+  BusinessOutlined,
+  MenuOutlined,
+  BorderClearOutlined
+} from '@material-ui/icons';
+
 // component made by jooha
 import Weather from './component/Weather';
 import NaverRank from './component/NaverRank';
@@ -42,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const lists = [
-  {title: "날씨 확인", component: <Weather />},
-  {title: "실시간 검색어 확인", component: <NaverRank />},
-  {title: "오목 게임", component: <Omok />},
-  {title: "주소 찾기", component: <MapAddress />},
-  {title: "계산기", component: <Calculator /> }
+  {title: "날씨 확인", component: <Weather />, icon: <WbSunnyOutlined />},
+  {title: "실시간 검색어 확인", component: <NaverRank />, icon: <Search />},
+  {title: "오목 게임", component: <Omok />, icon: <BorderClearOutlined />},
+  {title: "주소 찾기", component: <MapAddress />, icon: <BusinessOutlined />},
+  {title: "계산기", component: <Calculator />, icon: <ExposureOutlined />}
 ];
 
 function App() {
@@ -77,7 +84,7 @@ function App() {
       <List>
         {lists.map(li => (
           <ListItem  button divider key={li.title} onClick={() => paging(li)} >
-            <ListItemIcon><SearchIcon /></ListItemIcon>
+            <ListItemIcon>{li.icon}</ListItemIcon>
             <ListItemText primary={li.title}/>
           </ListItem>
         ))}
@@ -97,7 +104,7 @@ function App() {
               aria-label="menu"
               onClick={toggleDrawer(true)}
             >
-              <MenuIcon />
+              <MenuOutlined />
             </IconButton>
             <SwipeableDrawer
               open={leftMenu}
