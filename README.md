@@ -2,7 +2,7 @@
 리액트 연습장
 
 ## python install
-pip install flask
+pip install flask\n
 pip install feedparser
 pip install PyMySQL
 
