@@ -21,6 +21,7 @@ import Weather from './component/Weather';
 import NaverRank from './component/NaverRank';
 import Omok from './component/Omok';
 import MapAddress from './component/MapAddress';
+import Calculator from './component/Calculator';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,7 +45,8 @@ const lists = [
   {title: "날씨 확인", component: <Weather />},
   {title: "실시간 검색어 확인", component: <NaverRank />},
   {title: "오목 게임", component: <Omok />},
-  {title: "주소 찾기", component: <MapAddress />}
+  {title: "주소 찾기", component: <MapAddress />},
+  {title: "계산기", component: <Calculator /> }
 ];
 
 function App() {
