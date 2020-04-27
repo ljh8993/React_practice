@@ -24,3 +24,6 @@ __pycache__
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# secret
+/api/adb.py
