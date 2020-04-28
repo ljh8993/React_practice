@@ -63,14 +63,12 @@ const lists = [
 ];
 
 function idInCookie() {
-  const li = document.cookie.split(';');
-  for (let i=0; i<li.length; i++) {
-    const d = li[i].split('=');
-    if (d[0] === '_id') {
-      return d[1];
-    }
-  }
-  return false;
+  const c = document.cookie.match('(^|;) ?_id=([^;]*)(;|$)');
+  return c ? c[2] : false;
+}
+
+function deleteCookie (name) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1999 00:00:10 GMT;`;
 }
 
 function App() {
@@ -87,6 +85,7 @@ function App() {
   const [loginData, setLoginData] = useState({id: '', pwd: ''});
 
   const toggleDrawer = (_open) => (e) => {
+    if (!logged_in || !idInCookie()) return false;
     if (e.type === "keydown" && (e.key === "Tab" || e.key === "Shift")) {
       return;
     }
@@ -127,9 +126,6 @@ function App() {
     setLogin(true);
   }
 
-  const loginClose = () => {
-  }
-
   const signupBtn = () => {
     setDialog(true);
     if (login) {
@@ -139,22 +135,17 @@ function App() {
   }
 
   const logoutBtn = async() => {
-    const id = idInCookie();
     // const res = await axios.post('/logout', {"id": id});
     // if (res.status === 200 && res.statusText === "OK" && res['result']) {
     //   const date = new Date();
     //   date.setDate(date.getDate() - 1);
     //   let cooks = "_id=" + id;
-    //   cooks = "Expires=" + date.toUTCString();
+    //   cooks += "Expires=" + date.toUTCString();
     //   document.cookie=cooks;
     //   setLogged_in(false);
     //   toastFn("로그아웃 되었습니다.");
     // }
-    const date = new Date();
-    date.setDate(date.getDate() - 1);
-    let cooks = "_id=" + id;
-    cooks = "Expires=" + date.toUTCString();
-    document.cookie=cooks;
+    deleteCookie("_id");
     setLogged_in(false);
     toastFn("로그아웃 되었습니다.");
   }
@@ -178,21 +169,18 @@ function App() {
   const startDialog = async() => {
     if (login) {
       const res = await axios.post('/login', loginData);
-      console.log(res);
       if (res.status === 200 && res.statusText === "OK") {
         const d = res.data;
-        if (!d['result']) {
-          alert(d['msg']);
-        } else {
+        if (d['result']) {
           const date = new Date();
           date.setDate(date.getDate() + 1);
-          let cooks = "_id=" + d['id'];
-          cooks = "Expires=" + date.toUTCString();
-          document.cookie=cooks;
+          document.cookie=`_id=${d['id']};expires=${date.toUTCString()};path=/;`;
           setLogged_in(true);
           toastFn(d['msg']);
           handleClose();
+          return;
         }
+        alert(d['msg']);
       }
     }
     else if (signup) {
@@ -201,7 +189,6 @@ function App() {
         return;
       }
       const res = await axios.post('/signup', signupData);
-      console.log(res);
       if (res.status === 200 && res.statusText === "OK") {
         const d = res.data;
         if (!d['result']) {

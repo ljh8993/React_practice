@@ -19,7 +19,6 @@ export default function MapAddress() {
     
     const handleComplete = (data) => {
       let fullname = data.address;
-      console.log(data)
       if (data.addressType === 'R') {
           let extraAddress = ''; 
         if (data.bname !== '') {
