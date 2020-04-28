@@ -269,15 +269,15 @@ function App() {
           {
             !signup && login
             ? (<>
-              <TextField type="text" name="id" placeholder="ID" value={loginData.id} onChange={handlerChange} /><br/>
-              <TextField type="password" name="pwd" placeholder="pwd" value={loginData.pwd} onChange={handlerChange} />
+              <TextField type="text" name="id" label="ID" value={loginData.id} onChange={handlerChange} /><br/>
+              <TextField type="password" name="pwd" label="pwd" value={loginData.pwd} onChange={handlerChange} />
             </>)
             : (<>
-              <TextField type="text" name="id" placeholder="ID" value={signupData.id} onChange={handlerChange} /><br/>
-              <TextField type="text" name="name" placeholder="이름" value={signupData.name} onChange={handlerChange} /><br/>
-              <TextField type="password" name="pwd1" placeholder="비밀번호" value={signupData.pwd1} onChange={handlerChange} /><br/>
-              <TextField type="password" name="pwd2" placeholder="비밀번호 확인" value={signupData.pwd2} onChange={handlerChange} /><br/>
-              <TextField type="number" name="phone" placeholder="이동전화번호" value={signupData.phone} onChange={handlerChange} />
+              <TextField type="text" name="id" label="ID" value={signupData.id} onChange={handlerChange} /><br/>
+              <TextField type="text" name="name" label="이름" value={signupData.name} onChange={handlerChange} /><br/>
+              <TextField type="password" name="pwd1" label="비밀번호" value={signupData.pwd1} onChange={handlerChange} /><br/>
+              <TextField type="password" name="pwd2" label="비밀번호 확인" value={signupData.pwd2} onChange={handlerChange} /><br/>
+              <TextField type="number" name="phone" label="이동전화번호" value={signupData.phone} onChange={handlerChange} />
             </>) 
           }
           
