@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "start-api": "cd api && source venv/Scripts/activate &&flask run --no-debugger",
+    "start-api": "cd api && python api.py",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-api": "cd api && flask test",

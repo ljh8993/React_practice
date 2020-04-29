@@ -17,7 +17,8 @@ import {
   DialogTitle,
   DialogContent,
   TextField,
-  DialogActions
+  DialogActions,
+  Slide
 } from '@material-ui/core'
 import {
   ExposureOutlined,
@@ -25,7 +26,8 @@ import {
   Search,
   BusinessOutlined,
   MenuOutlined,
-  BorderClearOutlined
+  BorderClearOutlined,
+  Home
 } from '@material-ui/icons';
 
 // component made by jooha
@@ -54,7 +56,12 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
+
 const lists = [
+  {title: "HOME", component: '', icon: <Home />},
   {title: "날씨 확인", component: <Weather />, icon: <WbSunnyOutlined />},
   {title: "실시간 검색어 확인", component: <NaverRank />, icon: <Search />},
   {title: "오목 게임", component: <Omok />, icon: <BorderClearOutlined />},
@@ -83,6 +90,16 @@ function App() {
 
   const [signupData, setSignupData] = useState({id: '', pwd1: '', pwd2: '', name: '', phone: ''});
   const [loginData, setLoginData] = useState({id: '', pwd: ''});
+
+  useEffect(() => {
+    const cookie_chk = idInCookie();
+    if (cookie_chk) {
+      setLoginData({
+        ...loginData,
+        id: cookie_chk
+      });
+    }
+  }, []);
 
   const toggleDrawer = (_open) => (e) => {
     if (!logged_in || !idInCookie()) return false;
@@ -257,7 +274,9 @@ function App() {
         {main.component}
       </div>
 
-      <Dialog open={dialog} aria-labelledby="form-dialog-title">
+      <Dialog open={dialog}
+        TransitionComponent={Transition}
+        aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
           {
             !signup && login
@@ -269,15 +288,15 @@ function App() {
           {
             !signup && login
             ? (<>
-              <TextField type="text" name="id" label="ID" value={loginData.id} onChange={handlerChange} /><br/>
-              <TextField type="password" name="pwd" label="pwd" value={loginData.pwd} onChange={handlerChange} />
+              <TextField margin="dense" autoFocus type="text" name="id" label="아이디" value={loginData.id} onChange={handlerChange} /><br/>
+              <TextField type="password" name="pwd" label="비밀번호" value={loginData.pwd} onChange={handlerChange} />
             </>)
             : (<>
-              <TextField type="text" name="id" label="ID" value={signupData.id} onChange={handlerChange} /><br/>
+              <TextField autoFocus type="text" name="id" label="아이디" value={signupData.id} onChange={handlerChange} /><br/>
               <TextField type="text" name="name" label="이름" value={signupData.name} onChange={handlerChange} /><br/>
               <TextField type="password" name="pwd1" label="비밀번호" value={signupData.pwd1} onChange={handlerChange} /><br/>
               <TextField type="password" name="pwd2" label="비밀번호 확인" value={signupData.pwd2} onChange={handlerChange} /><br/>
-              <TextField type="number" name="phone" label="이동전화번호" value={signupData.phone} onChange={handlerChange} />
+              <TextField type="number" name="phone" label="휴대전화 번호" value={signupData.phone} onChange={handlerChange} />
             </>) 
           }
           
