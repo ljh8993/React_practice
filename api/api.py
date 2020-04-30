@@ -14,7 +14,6 @@ def login():
     data = request.json
     res, msg = service.loginFn(data)
     if res:
-        # session['id'] = msg
         return jsonify(result=True, id=msg, msg="로그인되었습니다.")
     else:
         return jsonify(result=False, msg=msg)
@@ -25,27 +24,25 @@ def signup():
     res, msg = service.signupFn(data)
     return jsonify(result=res, msg=msg)
 
-# @app.route("/logout", methods=["POST"])
-# def logout():
-#     out = request.json.get('id', '')
-#     if out != '':
-#         return jsonify(result=True)
-#     else:
-#         return jsonify(result=False)
 
 @app.route('/weather', methods=["POST"])
 def weather():
     data = request.json
     method = data.get("method", '')
+    select = data.get("select", '')
     if method == "city_list":
         return jsonify(result=True, list=service.city_list())
     elif method == "weather_data":
         code = data.get('code', 0)
         if not data or not code or not code.isdecimal() or 10 < int(code) or int(code) < 0:
             return jsonify(result=False, msg="No Data")
-        
-        chk, msg = service.rss_view(code)
-        return jsonify(result=chk, msg=msg)
+        try:
+            chk, data = service.rss_view(code, select)
+            return jsonify(result=chk, data=data, sel=select)
+        except Exception as e:
+            return jsonify(result=False, msg=repr(e))
+    else:
+        return jsonify(result=False, msg="No Method")
 
 @app.route("/naver_now_rank", methods=["POST"])
 def naver_now_rank():
@@ -63,4 +60,4 @@ def naver_now_rank():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

@@ -39,21 +39,10 @@ import Calculator from './component/Calculator';
 import Toast from './service/toast';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  list: {
-    width: 320
-  },
-  body: {
-
-  }
+  root: { flexGrow: 1 },
+  menuButton: { marginRight: theme.spacing(2) },
+  title: { flexGrow: 1 },
+  list: { width: 320 }
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -152,16 +141,6 @@ function App() {
   }
 
   const logoutBtn = async() => {
-    // const res = await axios.post('/logout', {"id": id});
-    // if (res.status === 200 && res.statusText === "OK" && res['result']) {
-    //   const date = new Date();
-    //   date.setDate(date.getDate() - 1);
-    //   let cooks = "_id=" + id;
-    //   cooks += "Expires=" + date.toUTCString();
-    //   document.cookie=cooks;
-    //   setLogged_in(false);
-    //   toastFn("로그아웃 되었습니다.");
-    // }
     deleteCookie("_id");
     setLogged_in(false);
     toastFn("로그아웃 되었습니다.");

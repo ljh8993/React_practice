@@ -67,16 +67,33 @@ def city_list():
         db.close()
 
 
-def rss_view(code):
-    db = adb.Adb()
+def rss_view(code, select):
+    db, res = adb.Adb(), ''
     try:
         db.execute("SELECT `url` FROM weather_table WHERE `code`=%(code)s;", {"code": code})
         rs = db.fetchone()
         data = fd.parse(rs[0])
-        ents = data.entries[0]
-        date = ents['title'].split('-')[-1]
-        coments = ents['wf']
-        return True, coments
+        if select == "list":
+            location = data.entries[0].content[0].value.split('</location>')
+            res = [
+                {
+                    "city": loc.split('<city>')[1].split('</city>')[0],
+                    "data": [
+                        {
+                            "time":d.split('<tmef>')[1].split('</tmef>')[0],
+                            "text": d.split('<wf>')[1].split('</wf>')[0],
+                            "min": d.split('<tmn>')[1].split('</tmn>')[0],
+                            "max": d.split('<tmx>')[1].split('</tmx>')[0]
+                        } for d in loc.split('<data>')[1:]
+                    ]
+                }
+                for loc in location[:-1]
+            ]
+        elif select == "all":
+            ents = data.entries[0]
+            date = ents['title'].split('-')[-1]
+            res = ents['wf']
+        return True, res
     except Exception as e:
         return False, repr(e)
     finally:

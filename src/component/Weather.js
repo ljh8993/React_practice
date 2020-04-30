@@ -27,7 +27,10 @@ const useStyles = makeStyles((theme) => ({
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
       padding: theme.spacing(2, 4, 3),
-      margin: '10%'
+      margin: '10%',
+      maxHeight: "85%",
+      minWidth: "360px",
+      overflowY: "auto"
     },
     button: {
         display: 'block',
@@ -39,6 +42,31 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 120,
       },
 }));
+
+function dateFormatting(d) {
+    const d_split = d.split(' ');
+    const d_s = d_split[0].split('-');
+    const date = `${d_s[0]}년${d_s[1]}월${d_s[2]}일 ${d_split[1].split(':')[0]}시`;
+    return date;
+}
+
+function htmlReturn(li) {
+    return(
+        <div id="transition-modal-description">
+            {li.map(l => (
+                <>
+                <h3>{l.city}</h3>
+                {l.data.map(d => (
+                    <>
+                    <div>{dateFormatting(d.time)} ({d.text})</div>
+                    <div>최저/최고 : {d.min}℃ / {d.max}℃</div><br/>
+                    </>
+                ))}
+                </>
+            ))}
+        </div>
+    );
+}
 
 export default function Weather() {
     const classes = useStyles();
@@ -77,25 +105,33 @@ export default function Weather() {
         setModalOpen(false);
     };
 
-    const modalOpenFn = async() => {
+    const modalOpenFn = async(text) => {
         if (!code) {
             if (toast) return;
             toastOpen();
             return;
         }
-        setToast(false);
+        if (toast) setToast(false);
+
         setCircle(true);
-        let s = code.split(';')
-        const res = await axios.post('/weather', {method: "weather_data", code: s[0]});
+        setContents(''); setTitle('');
+        const s = code.split(';');
+        const res = await axios.post('/weather', {method: "weather_data", code: s[0], select: text});
         if (res.status === 200 && res.statusText === "OK" && res.data.result) {
-            const msg = res.data.msg.replace(/<br \/>/gi, "\n\n");
+            const d = res.data;
             setTitle(s[1]);
-            setContents(msg);
-            setCircle(false);
+            if (d.sel === "list") {
+                const html = htmlReturn(d.data);
+                setContents(html);
+            } else if (d.sel === "all") {
+                const msg = d.data.replace(/<br \/>/gi, "\n\n");
+                setContents(
+                    <p id="transition-modal-description">{msg}</p>
+                );
+            }
             setModalOpen(true);
-        } else {
-            setCircle(false);
         }
+        setCircle(false);
     };
     //////
 
@@ -108,7 +144,7 @@ export default function Weather() {
     
     return (
         <>
-            <Toast open={toast} msg={"You have to select '지역 선택'"}/>
+            <Toast open={toast} msg={"지역을 선택해주세요."}/>
             {circle && <Circle_progress />}
             <FormControl className={classes.formControl}>
                 <InputLabel id="demo-controlled-open-select-label">지역 선택</InputLabel>
@@ -127,8 +163,11 @@ export default function Weather() {
            
                 </Select>
             </FormControl>
-            <Button className={classes.button} onClick={modalOpenFn}>
-                검색
+            <Button className={classes.button} onClick={() => modalOpenFn("list")}>
+                도시 별 상세 날씨 리스트 (7일)
+            </Button>
+            <Button className={classes.button} onClick={() => modalOpenFn("all")}>
+                전체적인 날씨
             </Button>
 
             {/* MODAL */}
@@ -147,7 +186,7 @@ export default function Weather() {
                 <Fade in={modalopen}>
                 <div className={classes.paper}>
                     <h2 id="transition-modal-title">{modalTitle}</h2>
-                    <p id="transition-modal-description">{modalContents}</p>
+                    {modalContents}
                 </div>
                 </Fade>
             </Modal>
