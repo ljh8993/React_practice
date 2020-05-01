@@ -54,15 +54,15 @@ function htmlReturn(li) {
     return(
         <div id="transition-modal-description">
             {li.map(l => (
-                <>
-                <h3>{l.city}</h3>
-                {l.data.map(d => (
-                    <>
-                    <div>{dateFormatting(d.time)} ({d.text})</div>
-                    <div>최저/최고 : {d.min}℃ / {d.max}℃</div><br/>
-                    </>
-                ))}
-                </>
+                <div key={l.city}>
+                    <h3>{l.city}</h3>
+                    {l.data.map((d, idx) => (
+                        <div key={idx}>
+                            <div>{dateFormatting(d.time)} ({d.text})</div>
+                            <div>최저/최고 : {d.min}℃ / {d.max}℃</div><br/>
+                        </div>
+                    ))}
+                </div>
             ))}
         </div>
     );

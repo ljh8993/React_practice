@@ -180,7 +180,7 @@ function App() {
       }
     }
     else if (signup) {
-      if (signupData.phone.length > 11) {
+      if (signupData.phone.length !== 11) {
         alert("이동전화번호를 확인해주세요.");
         return;
       }
@@ -194,6 +194,18 @@ function App() {
           handleClose();
         }
       }
+    }
+  }
+
+  const pressed_key = (e) => {
+    if (e.keyCode === 13) {
+      startDialog();
+    }
+  }
+  
+  const esccheck = (e) => {
+    if (e.keyCode === 27) {
+      handleClose();
     }
   }
 
@@ -255,7 +267,9 @@ function App() {
 
       <Dialog open={dialog}
         TransitionComponent={Transition}
-        aria-labelledby="form-dialog-title">
+        aria-labelledby="form-dialog-title"
+        onKeyDown={esccheck}
+      >
         <DialogTitle id="form-dialog-title">
           {
             !signup && login
@@ -268,14 +282,22 @@ function App() {
             !signup && login
             ? (<>
               <TextField margin="dense" autoFocus type="text" name="id" label="아이디" value={loginData.id} onChange={handlerChange} /><br/>
-              <TextField type="password" name="pwd" label="비밀번호" value={loginData.pwd} onChange={handlerChange} />
+              <TextField type="password" name="pwd" label="비밀번호" value={loginData.pwd} onKeyDown={pressed_key} onChange={handlerChange} />
             </>)
             : (<>
               <TextField autoFocus type="text" name="id" label="아이디" value={signupData.id} onChange={handlerChange} /><br/>
               <TextField type="text" name="name" label="이름" value={signupData.name} onChange={handlerChange} /><br/>
               <TextField type="password" name="pwd1" label="비밀번호" value={signupData.pwd1} onChange={handlerChange} /><br/>
               <TextField type="password" name="pwd2" label="비밀번호 확인" value={signupData.pwd2} onChange={handlerChange} /><br/>
-              <TextField type="number" name="phone" label="휴대전화 번호" value={signupData.phone} onChange={handlerChange} />
+              <TextField type="number" name="phone" label="휴대전화 번호" value={signupData.phone}
+                onKeyDown={pressed_key}
+                onChange={handlerChange}
+                onInput = {(e) =>{
+                  if (e.target.value.length > 11) {
+                    e.target.value = e.target.value.toString().slice(0, 11)
+                  }
+                }}  
+              />
             </>) 
           }
           
