@@ -1,0 +1,61 @@
+.frame {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+}
+.frame input {
+    display: none;
+}
+.frame .img_f {
+    width: calc(100% * 3);
+    display: flex;
+    transition: 1s;
+    position: relative;
+}
+.frame .img_d {
+    width: calc(100% / 3);
+    height: 300px;
+}
+.frame .img_d img {
+    height: 100%;
+}
+.frame button {
+    top: 140px;
+    position: absolute;
+    z-index: 1;
+}
+.back {
+    left: 10px;
+}
+.forward {
+    right: 10px;
+}
+.frame .dots {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+}
+.frame .dots label{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid darkgray;
+    display: inline-block;
+    background: #fff;
+    font-size: 0;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.dots label {
+    margin-left: 8px;
+}
+
+#dot_input0:checked ~ .dots label:nth-child(1),
+#dot_input1:checked ~ .dots label:nth-child(2),
+#dot_input2:checked ~ .dots label:nth-child(3) {
+    background-color: darkgray;
+}

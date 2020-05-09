@@ -27,7 +27,8 @@ import {
   BusinessOutlined,
   MenuOutlined,
   BorderClearOutlined,
-  Home
+  Home,
+  Code
 } from '@material-ui/icons';
 
 // component made by jooha
@@ -36,6 +37,8 @@ import NaverRank from './component/NaverRank';
 import Omok from './component/Omok';
 import MapAddress from './component/MapAddress';
 import Calculator from './component/Calculator';
+import ImageSlider from './component/ImageSlider';
+
 import Toast from './service/toast';
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +58,8 @@ const lists = [
   {title: "실시간 검색어 확인", component: <NaverRank />, icon: <Search />},
   {title: "오목 게임", component: <Omok />, icon: <BorderClearOutlined />},
   {title: "주소 찾기", component: <MapAddress />, icon: <BusinessOutlined />},
-  {title: "계산기", component: <Calculator />, icon: <ExposureOutlined />}
+  {title: "계산기", component: <Calculator />, icon: <ExposureOutlined />},
+  {title: "슬라이더", component: <ImageSlider />, icon: <Code />},
 ];
 
 function idInCookie() {
